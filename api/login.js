@@ -1,4 +1,11 @@
 module.exports = (req, res) => {
+  if (req.method === 'OPTIONS') {
+    res.setHeader('Access-Control-Allow-Origin', '*')
+    res.setHeader('Access-Control-Allow-Methods', 'POST')
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type')
+    return res.status(200).send()
+  }
+
   if (req.method !== 'POST') {
     return res.status(405).json({ success: false, message: 'Method not allowed' })
   }
@@ -14,8 +21,10 @@ module.exports = (req, res) => {
     (username === adminUser && password === adminPass) ||
     (username === userUser && password === userPass)
   ) {
+    res.setHeader('Access-Control-Allow-Origin', '*')
     res.status(200).json({ success: true, message: 'Login successful', username })
   } else {
+    res.setHeader('Access-Control-Allow-Origin', '*')
     res.status(401).json({ success: false, message: 'Invalid username or password' })
   }
 }
