@@ -1,13 +1,14 @@
 {
   "version": 2,
+  "framework": null,
   "builds": [
-    {
-      "src": "package.json",
-      "use": "@vercel/static-build"
-    },
     {
       "src": "api/login.js",
       "use": "@vercel/node"
+    },
+    {
+      "src": "dist/**",
+      "use": "@vercel/static"
     }
   ],
   "routes": [
@@ -15,6 +16,20 @@
       "src": "/api/login",
       "methods": ["POST", "OPTIONS"],
       "dest": "/api/login.js"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/dist/index.html"
+    }
+  ],
+  "headers": [
+    {
+      "source": "api/(.*)",
+      "headers": [
+        { "key": "Access-Control-Allow-Origin", "value": "*" },
+        { "key": "Access-Control-Allow-Methods", "value": "POST, OPTIONS" },
+        { "key": "Access-Control-Allow-Headers", "value": "Content-Type" }
+      ]
     }
   ]
 }
